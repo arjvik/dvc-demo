@@ -7,13 +7,14 @@ The goal of this repository is not to learn how to create an NLP classifier but 
 import argparse
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split
 import joblib
 
 # Consts
 CLASS_LABEL = 'MachineLearning'
+dataset_path = 'data/CrossValidated-Questions-Nov-2020.csv'
 train_df_path = 'data/train.csv.gz'
 test_df_path = 'data/test.csv.gz'
 
@@ -40,7 +41,7 @@ def fit_tfidf(train_df, test_df):
 
 
 def fit_model(train_X, train_y, random_state=42):
-    clf_tfidf = LogisticRegression(solver='sag', random_state=random_state)
+    clf_tfidf = SGDClassifier(loss='modified_huber', random_state=random_state)
     clf_tfidf.fit(train_X, train_y)
     return clf_tfidf
 
@@ -60,7 +61,7 @@ def eval_model(clf, X, y):
 
 def split(random_state=42):
     print('Loading data...')
-    df = pd.read_csv('data/CrossValidated-Questions-Nov-2020.csv')
+    df = pd.read_csv(dataset_path)
     df[CLASS_LABEL] = df['Tags'].str.contains('machine-learning').fillna(False)
     train_df, test_df = train_test_split(df, random_state=random_state, stratify=df[CLASS_LABEL])
 
