@@ -12,14 +12,14 @@ split:
       paths.dataset: data/CrossValidated-Questions-Nov-2020.csv
       paths.test_df: outputs/test.csv.gz
       paths.train_df: outputs/train.csv.gz
-      split.seed: 42
+      split.seed: 45
   outs:
   - path: outputs/test.csv.gz
-    md5: e1a7c37816b585cc3446b47d49b25832
-    size: 6161717
+    md5: f589d823662ffbcc1875490583a340f8
+    size: 6172469
   - path: outputs/train.csv.gz
-    md5: 77adfc72aeb6c5dbd63f169f5ab2425b
-    size: 18668820
+    md5: 9b3cd3e420d10861cdd26e235a4511cb
+    size: 18658470
 featurize:
   cmd: python3 main.py featurize
   deps:
@@ -27,11 +27,11 @@ featurize:
     md5: de163b0e187e2be0c1039db0c3bc1060
     size: 6753
   - path: outputs/test.csv.gz
-    md5: e1a7c37816b585cc3446b47d49b25832
-    size: 6161717
+    md5: f589d823662ffbcc1875490583a340f8
+    size: 6172469
   - path: outputs/train.csv.gz
-    md5: 77adfc72aeb6c5dbd63f169f5ab2425b
-    size: 18668820
+    md5: 9b3cd3e420d10861cdd26e235a4511cb
+    size: 18658470
   params:
     params.yaml:
       paths.test_df: outputs/test.csv.gz
@@ -40,11 +40,11 @@ featurize:
       paths.train_df_featurized: outputs/train-featurized.csv.gz
   outs:
   - path: outputs/test-featurized.csv.gz
-    md5: 75de8d6a3f8a91a5ddddc0e1ee5ba0a1
-    size: 6740069
+    md5: 734f0efbc87c696ae83dcf0513a319ad
+    size: 6751774
   - path: outputs/train-featurized.csv.gz
-    md5: 0b21899597750e809a6bb20d9b67de25
-    size: 20416177
+    md5: 8f8dec7b6f6bd5648b563e23cd41cbc1
+    size: 20403945
 tfidf:
   cmd: python3 main.py tfidf
   deps:
@@ -52,11 +52,11 @@ tfidf:
     md5: de163b0e187e2be0c1039db0c3bc1060
     size: 6753
   - path: outputs/test-featurized.csv.gz
-    md5: 75de8d6a3f8a91a5ddddc0e1ee5ba0a1
-    size: 6740069
+    md5: 734f0efbc87c696ae83dcf0513a319ad
+    size: 6751774
   - path: outputs/train-featurized.csv.gz
-    md5: 0b21899597750e809a6bb20d9b67de25
-    size: 20416177
+    md5: 8f8dec7b6f6bd5648b563e23cd41cbc1
+    size: 20403945
   params:
     params.yaml:
       paths.test_df_featurized: outputs/test-featurized.csv.gz
@@ -67,14 +67,14 @@ tfidf:
       tfidf.max_features: 25000
   outs:
   - path: outputs/test-tfidf.npz
-    md5: bf4d56b5fe415833b0a52c36f06e8483
-    size: 10338250
+    md5: 9d61405598ba97c2539dd7c2673cf481
+    size: 10357972
   - path: outputs/tfidf.pkl
-    md5: ee1310e14c5dea8619e13ba92f55c749
-    size: 2981751
+    md5: 3fd078173c15e600680546dd5b8e384d
+    size: 2995012
   - path: outputs/train-tfidf.npz
-    md5: 52c2b75f42dea3eb50cf6cd94f4af44d
-    size: 31280925
+    md5: e89bc0d9d4bc8a953507d0b564564a89
+    size: 31259750
 train:
   cmd: python3 main.py train
   deps:
@@ -82,11 +82,11 @@ train:
     md5: de163b0e187e2be0c1039db0c3bc1060
     size: 6753
   - path: outputs/train-featurized.csv.gz
-    md5: 0b21899597750e809a6bb20d9b67de25
-    size: 20416177
+    md5: 8f8dec7b6f6bd5648b563e23cd41cbc1
+    size: 20403945
   - path: outputs/train-tfidf.npz
-    md5: 52c2b75f42dea3eb50cf6cd94f4af44d
-    size: 31280925
+    md5: e89bc0d9d4bc8a953507d0b564564a89
+    size: 31259750
   params:
     params.yaml:
       paths.model: outputs/model.pkl
@@ -94,13 +94,13 @@ train:
       paths.train_metrics: metrics-train.yaml
       paths.train_tfidf: outputs/train-tfidf.npz
       train.loss: modified_huber
-      train.seed: 44
+      train.seed: 42
   outs:
   - path: metrics-train.yaml
-    md5: 972e929079c75de677bd9a77b3bad313
-    size: 175
+    md5: a621d3247db9ad2af95ace2343af37f3
+    size: 174
   - path: outputs/model.pkl
-    md5: 55322b9a208dd935b011695f30b284f2
+    md5: 7a6a76a3b384e26435b29031eeabdd26
     size: 200962
 test:
   cmd: python3 main.py test
@@ -109,14 +109,14 @@ test:
     md5: de163b0e187e2be0c1039db0c3bc1060
     size: 6753
   - path: outputs/model.pkl
-    md5: 55322b9a208dd935b011695f30b284f2
+    md5: 7a6a76a3b384e26435b29031eeabdd26
     size: 200962
   - path: outputs/test-featurized.csv.gz
-    md5: 75de8d6a3f8a91a5ddddc0e1ee5ba0a1
-    size: 6740069
+    md5: 734f0efbc87c696ae83dcf0513a319ad
+    size: 6751774
   - path: outputs/test-tfidf.npz
-    md5: bf4d56b5fe415833b0a52c36f06e8483
-    size: 10338250
+    md5: 9d61405598ba97c2539dd7c2673cf481
+    size: 10357972
   params:
     params.yaml:
       paths.model: outputs/model.pkl
@@ -125,5 +125,5 @@ test:
       paths.test_tfidf: outputs/test-tfidf.npz
   outs:
   - path: metrics-test.yaml
-    md5: 2344cc5feb75686cce44587f3a101a91
+    md5: 4d04ae9b997b04546467e1a7133851a1
     size: 164

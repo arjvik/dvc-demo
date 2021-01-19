@@ -12,11 +12,11 @@ paths:
   test_metrics: 'metrics-test.yaml'
 
 split:
-  seed: 42
+  seed: 45
 
 tfidf:
   max_features: 25000
 
 train:
   loss: 'modified_huber'
-  seed: 44
+  seed: 42
