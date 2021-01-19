@@ -93,10 +93,10 @@ train:
       paths.train_df_featurized: outputs/train-featurized.csv.gz
       paths.train_tfidf: outputs/train-tfidf.npz
       train.loss: modified_huber
-      train.seed: 43
+      train.seed: 44
   outs:
   - path: outputs/model.pkl
-    md5: 875a80870ef485945fe16d92c0e587d9
+    md5: 55322b9a208dd935b011695f30b284f2
     size: 200962
 test:
   cmd: python3 main.py test
@@ -105,7 +105,7 @@ test:
     md5: cfd6d73fc8ee785b439e8ae4831a1577
     size: 6447
   - path: outputs/model.pkl
-    md5: 875a80870ef485945fe16d92c0e587d9
+    md5: 55322b9a208dd935b011695f30b284f2
     size: 200962
   - path: outputs/test-featurized.csv.gz
     md5: cdcab32885aaf4e86f803fbe00614bbc

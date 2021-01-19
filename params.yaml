@@ -17,4 +17,4 @@ tfidf:
 
 train:
   loss: 'modified_huber'
-  seed: 43
+  seed: 44
