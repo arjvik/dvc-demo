@@ -63,6 +63,7 @@ stages:
     - main.py
     - outputs/test-featurized.csv.gz
     - outputs/test-tfidf.npz
+    - outputs/model.pkl
     params:
     - paths.model
     - paths.test_df_featurized
