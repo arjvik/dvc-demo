@@ -12,7 +12,7 @@ paths:
   test_metrics: 'metrics-test.yaml'
 
 split:
-  seed: 45
+  seed: 42
 
 tfidf:
   max_features: 25000
