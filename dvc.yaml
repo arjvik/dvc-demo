@@ -1,0 +1,69 @@
+stages:
+  split:
+    cmd: python3 main.py split
+    deps:
+    - data/CrossValidated-Questions-Nov-2020.csv
+    - main.py
+    params:
+    - paths.dataset
+    - paths.test_df
+    - paths.train_df
+    - split.seed
+    outs:
+    - outputs/test.csv.gz
+    - outputs/train.csv.gz
+  featurize:
+    cmd: python3 main.py featurize
+    deps:
+    - main.py
+    - outputs/test.csv.gz
+    - outputs/train.csv.gz
+    params:
+    - paths.test_df
+    - paths.test_df_featurized
+    - paths.train_df
+    - paths.train_df_featurized
+    outs:
+    - outputs/test-featurized.csv.gz
+    - outputs/train-featurized.csv.gz
+  tfidf:
+    cmd: python3 main.py tfidf
+    deps:
+    - main.py
+    - outputs/test-featurized.csv.gz
+    - outputs/train-featurized.csv.gz
+    params:
+    - paths.test_df_featurized
+    - paths.test_tfidf
+    - paths.tfidf
+    - paths.train_df_featurized
+    - paths.train_tfidf
+    - tfidf.max_features
+    outs:
+    - outputs/test-tfidf.npz
+    - outputs/tfidf.pkl
+    - outputs/train-tfidf.npz
+  train:
+    cmd: python3 main.py train
+    deps:
+    - main.py
+    - outputs/train-featurized.csv.gz
+    - outputs/train-tfidf.npz
+    params:
+    - paths.model
+    - paths.train_df_featurized
+    - paths.train_tfidf
+    - train.loss
+    - train.seed
+    outs:
+    - outputs/model.pkl
+  test:
+    cmd: python3 main.py test
+    deps:
+    - main.py
+    - outputs/test-featurized.csv.gz
+    - outputs/test-tfidf.npz
+    params:
+    - paths.model
+    - paths.test_df_featurized
+    - paths.test_tfidf

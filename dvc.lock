@@ -1,0 +1,117 @@
+split:
+  cmd: python3 main.py split
+  deps:
+  - path: data/CrossValidated-Questions-Nov-2020.csv
+    md5: 1465d5fe76bf646bca8ee53c8686b745
+    size: 75856988
+  - path: main.py
+    md5: cfd6d73fc8ee785b439e8ae4831a1577
+    size: 6447
+  params:
+    params.yaml:
+      paths.dataset: data/CrossValidated-Questions-Nov-2020.csv
+      paths.test_df: outputs/test.csv.gz
+      paths.train_df: outputs/train.csv.gz
+      split.seed: 42
+  outs:
+  - path: outputs/test.csv.gz
+    md5: 64d27ebd846328c1de12b20ae8a4869a
+    size: 6161717
+  - path: outputs/train.csv.gz
+    md5: 5b947b676a07c974e4b89f4b98b229a2
+    size: 18668820
+featurize:
+  cmd: python3 main.py featurize
+  deps:
+  - path: main.py
+    md5: cfd6d73fc8ee785b439e8ae4831a1577
+    size: 6447
+  - path: outputs/test.csv.gz
+    md5: 64d27ebd846328c1de12b20ae8a4869a
+    size: 6161717
+  - path: outputs/train.csv.gz
+    md5: 5b947b676a07c974e4b89f4b98b229a2
+    size: 18668820
+  params:
+    params.yaml:
+      paths.test_df: outputs/test.csv.gz
+      paths.test_df_featurized: outputs/test-featurized.csv.gz
+      paths.train_df: outputs/train.csv.gz
+      paths.train_df_featurized: outputs/train-featurized.csv.gz
+  outs:
+  - path: outputs/test-featurized.csv.gz
+    md5: cdcab32885aaf4e86f803fbe00614bbc
+    size: 6740069
+  - path: outputs/train-featurized.csv.gz
+    md5: 75aa0b844b42e94706e3409bdcee7ce9
+    size: 20416177
+tfidf:
+  cmd: python3 main.py tfidf
+  deps:
+  - path: main.py
+    md5: cfd6d73fc8ee785b439e8ae4831a1577
+    size: 6447
+  - path: outputs/test-featurized.csv.gz
+    md5: cdcab32885aaf4e86f803fbe00614bbc
+    size: 6740069
+  - path: outputs/train-featurized.csv.gz
+    md5: 75aa0b844b42e94706e3409bdcee7ce9
+    size: 20416177
+  params:
+    params.yaml:
+      paths.test_df_featurized: outputs/test-featurized.csv.gz
+      paths.test_tfidf: outputs/test-tfidf.npz
+      paths.tfidf: outputs/tfidf.pkl
+      paths.train_df_featurized: outputs/train-featurized.csv.gz
+      paths.train_tfidf: outputs/train-tfidf.npz
+      tfidf.max_features: 25000
+  outs:
+  - path: outputs/test-tfidf.npz
+    md5: bf4d56b5fe415833b0a52c36f06e8483
+    size: 10338250
+  - path: outputs/tfidf.pkl
+    md5: 8fa2063287dc55221da216400e813002
+    size: 2981751
+  - path: outputs/train-tfidf.npz
+    md5: 52c2b75f42dea3eb50cf6cd94f4af44d
+    size: 31280925
+train:
+  cmd: python3 main.py train
+  deps:
+  - path: main.py
+    md5: cfd6d73fc8ee785b439e8ae4831a1577
+    size: 6447
+  - path: outputs/train-featurized.csv.gz
+    md5: 75aa0b844b42e94706e3409bdcee7ce9
+    size: 20416177
+  - path: outputs/train-tfidf.npz
+    md5: 52c2b75f42dea3eb50cf6cd94f4af44d
+    size: 31280925
+  params:
+    params.yaml:
+      paths.model: outputs/model.pkl
+      paths.train_df_featurized: outputs/train-featurized.csv.gz
+      paths.train_tfidf: outputs/train-tfidf.npz
+      train.loss: modified_huber
+      train.seed: 42
+  outs:
+  - path: outputs/model.pkl
+    md5: 079208a940d11ec5249a95198ef5cfdd
+    size: 200962
+test:
+  cmd: python3 main.py test
+  deps:
+  - path: main.py
+    md5: cfd6d73fc8ee785b439e8ae4831a1577
+    size: 6447
+  - path: outputs/test-featurized.csv.gz
+    md5: cdcab32885aaf4e86f803fbe00614bbc
+    size: 6740069
+  - path: outputs/test-tfidf.npz
+    md5: bf4d56b5fe415833b0a52c36f06e8483
+    size: 10338250
+  params:
+    params.yaml:
+      paths.model: outputs/model.pkl
+      paths.test_df_featurized: outputs/test-featurized.csv.gz
+      paths.test_tfidf: outputs/test-tfidf.npz
