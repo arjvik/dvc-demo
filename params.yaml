@@ -1,0 +1,20 @@
+paths:
+  dataset: 'data/CrossValidated-Questions-Nov-2020.csv'
+  train_df: 'outputs/train.csv.gz'
+  test_df: 'outputs/test.csv.gz'
+  train_df_featurized: 'outputs/train-featurized.csv.gz'
+  test_df_featurized: 'outputs/test-featurized.csv.gz'
+  train_tfidf: 'outputs/train-tfidf.npz'
+  test_tfidf: 'outputs/test-tfidf.npz'
+  tfidf: 'outputs/tfidf.pkl'
+  model: 'outputs/model.pkl'
+
+split:
+  seed: 42
+
+tfidf:
+  max_features: 25000
+
+train:
+  loss: 'modified_huber'
+  seed: 42

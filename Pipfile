@@ -7,6 +7,7 @@ name = "pypi"
 pandas = "*"
 scikit-learn = "*"
 joblib = "*"
+dagshub = "*"
 
 [dev-packages]
 dvc = "*"
