@@ -19,8 +19,7 @@ _params = None
 def read_param(name, filename="params.yaml"):
     global _params
     if _params == None:
-        with open(filename) as file:
-            _params = yaml.safe_load(file)
+        _params = yaml.safe_load(open(filename))
     obj = _params
     while "." in name:
         key, name = name.split(".", 1)
@@ -96,19 +95,20 @@ def _eval_model(model, X, y):
     y_proba = model.predict_proba(X)[:, 1]
     y_pred = model.predict(X)
     return {
-        'roc_auc': roc_auc_score(y, y_proba),
-        'average_precision': average_precision_score(y, y_proba),
-        'accuracy': accuracy_score(y, y_pred),
-        'precision': precision_score(y, y_pred),
-        'recall': recall_score(y, y_pred),
-        'f1': f1_score(y, y_pred),
+        'roc_auc': float(roc_auc_score(y, y_proba)),
+        'average_precision': float(average_precision_score(y, y_proba)),
+        'accuracy': float(accuracy_score(y, y_pred)),
+        'precision': float(precision_score(y, y_pred)),
+        'recall': float(recall_score(y, y_pred)),
+        'f1': float(f1_score(y, y_pred)),
     }
 
 def train(train_df_featurized_path=read_param("paths.train_df_featurized"),
           train_tfidf_path=read_param("paths.train_tfidf"),
           loss=read_param("train.loss"),
           random_state=read_param("train.seed"),
-          model_path=read_param("paths.model")):
+          model_path=read_param("paths.model"),
+          train_metrics_path=read_param("paths.train_metrics")):
     
     print(f"Loading {train_df_featurized_path} and {train_tfidf_path}")
     train_df = pd.read_csv(train_df_featurized_path)
@@ -121,12 +121,14 @@ def train(train_df_featurized_path=read_param("paths.train_df_featurized"),
     print(f"Writing model to {model_path}")
     pickle.dump(model, open(model_path, 'wb'))
     
-    print("Evaluating model on training set:")
-    print(_eval_model(model, train_tfidf, train_df['MachineLearning']))
+    print(f"Calculating and saving metrics to {train_metrics_path}")
+    metrics = _eval_model(model, train_tfidf, train_df['MachineLearning'])
+    yaml.safe_dump(metrics, open(train_metrics_path, 'w'))
 
 def test(test_df_featurized_path=read_param("paths.test_df_featurized"),
          test_tfidf_path=read_param("paths.test_tfidf"),
-         model_path=read_param("paths.model")):
+         model_path=read_param("paths.model"),
+         test_metrics_path=read_param("paths.test_metrics")):
     
     print(f"Loading {test_df_featurized_path} and {test_tfidf_path}")
     test_df = pd.read_csv(test_df_featurized_path)
@@ -135,8 +137,9 @@ def test(test_df_featurized_path=read_param("paths.test_df_featurized"),
     print(f"Loading model from {model_path}")
     model = pickle.load(open(model_path, 'rb'))
     
-    print("Evaluating model on test set:")
-    print(_eval_model(model, test_tfidf, test_df['MachineLearning']))
+    print(f"Calculating and saving metrics to {test_metrics_path}")
+    metrics = _eval_model(model, test_tfidf, test_df['MachineLearning'])
+    yaml.safe_dump(metrics, open(test_metrics_path, 'w'))
 
 if __name__ == '__main__':
     import sys

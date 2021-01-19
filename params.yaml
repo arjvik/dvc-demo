@@ -8,6 +8,8 @@ paths:
   test_tfidf: 'outputs/test-tfidf.npz'
   tfidf: 'outputs/tfidf.pkl'
   model: 'outputs/model.pkl'
+  train_metrics: 'outputs/metrics-train.yaml'
+  test_metrics: 'outputs/metrics-test.yaml'
 
 split:
   seed: 42
@@ -17,4 +19,4 @@ tfidf:
 
 train:
   loss: 'modified_huber'
-  seed: 44
+  seed: 42

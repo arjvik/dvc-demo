@@ -57,6 +57,8 @@ stages:
     - train.seed
     outs:
     - outputs/model.pkl
+    metrics:
+    - outputs/metrics-train.yaml
   test:
     cmd: python3 main.py test
     deps:
@@ -68,3 +70,5 @@ stages:
     - paths.model
     - paths.test_df_featurized
     - paths.test_tfidf
+    metrics:
+    - outputs/metrics-test.yaml
