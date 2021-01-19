@@ -55,10 +55,12 @@ stages:
     - paths.train_tfidf
     - train.loss
     - train.seed
+    - paths.train_metrics
     outs:
     - outputs/model.pkl
     metrics:
-    - outputs/metrics-train.yaml
+    - metrics-train.yaml:
+        cache: false
   test:
     cmd: python3 main.py test
     deps:
@@ -70,5 +72,7 @@ stages:
     - paths.model
     - paths.test_df_featurized
     - paths.test_tfidf
+    - paths.test_metrics
     metrics:
-    - outputs/metrics-test.yaml
+    - metrics-test.yaml:
+        cache: false

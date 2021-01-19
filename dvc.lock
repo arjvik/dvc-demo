@@ -91,11 +91,12 @@ train:
     params.yaml:
       paths.model: outputs/model.pkl
       paths.train_df_featurized: outputs/train-featurized.csv.gz
+      paths.train_metrics: metrics-train.yaml
       paths.train_tfidf: outputs/train-tfidf.npz
       train.loss: modified_huber
       train.seed: 42
   outs:
-  - path: outputs/metrics-train.yaml
+  - path: metrics-train.yaml
     md5: fd190bc237bcceb426e2029d35c5b29d
     size: 174
   - path: outputs/model.pkl
@@ -120,8 +121,9 @@ test:
     params.yaml:
       paths.model: outputs/model.pkl
       paths.test_df_featurized: outputs/test-featurized.csv.gz
+      paths.test_metrics: metrics-test.yaml
       paths.test_tfidf: outputs/test-tfidf.npz
   outs:
-  - path: outputs/metrics-test.yaml
+  - path: metrics-test.yaml
     md5: 4a89b0048cc302e5999fffca39599b9c
     size: 166
