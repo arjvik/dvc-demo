@@ -94,13 +94,13 @@ train:
       paths.train_metrics: metrics-train.yaml
       paths.train_tfidf: outputs/train-tfidf.npz
       train.loss: modified_huber
-      train.seed: 43
+      train.seed: 44
   outs:
   - path: metrics-train.yaml
-    md5: fca65f44e40fe97653ac609fb3cc065d
-    size: 176
+    md5: 972e929079c75de677bd9a77b3bad313
+    size: 175
   - path: outputs/model.pkl
-    md5: 875a80870ef485945fe16d92c0e587d9
+    md5: 55322b9a208dd935b011695f30b284f2
     size: 200962
 test:
   cmd: python3 main.py test
@@ -109,7 +109,7 @@ test:
     md5: de163b0e187e2be0c1039db0c3bc1060
     size: 6753
   - path: outputs/model.pkl
-    md5: 875a80870ef485945fe16d92c0e587d9
+    md5: 55322b9a208dd935b011695f30b284f2
     size: 200962
   - path: outputs/test-featurized.csv.gz
     md5: 75de8d6a3f8a91a5ddddc0e1ee5ba0a1
@@ -125,5 +125,5 @@ test:
       paths.test_tfidf: outputs/test-tfidf.npz
   outs:
   - path: metrics-test.yaml
-    md5: c78712e05f32098fc84152e77abb804a
-    size: 163
+    md5: 2344cc5feb75686cce44587f3a101a91
+    size: 164
