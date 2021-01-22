@@ -12,11 +12,34 @@ This repository implements a binary classifier on questions from CrossValidated 
 Usage: python3 main.py [split|featurize|tfidf|train|test]
 ```
 
+## View Experiment Log
+
+The following command transforms the experiment log outputted by DVC into a human-readable format. It pipes the raw JSON outputted by DVC into a [`jq`](https://stedolan.github.io/jq/) program to transform it into a TSV (tab-seperated value) of metrics. The TSV is then piped to `column` to pretty-print it.
+
+```bash
+$ dvc metrics show --show-json --all-commits | jq -r '(["ID", "Train Accuracy", "Test Accuracy", "Train ROC AUC", "Test ROC AUC"] | ., map("=============")), (to_entries[] as {key: $id, value: {"metrics-train.yaml": $train, "metrics-test.yaml": $test}} | [$id[:10], $train.accuracy, $test.accuracy, $train.roc_auc, $test.roc_auc]) | @tsv' | column -tns$'\t'
+```
+
+Output:
+
+```sql
+ID              Train Accuracy      Test Accuracy   Train ROC AUC       Test ROC AUC
+==============  ==============      ==============  ==============      ==============
+workspace       0.9192533333333334  0.89608         0.9546657196819067  0.8611241864339614
+8dbc9e261a      0.9192533333333334  0.89608         0.9546657196819067  0.8611241864339614
+898fc3ba3a      0.9192533333333334  0.89608         0.9546657196819067  0.8611241864339614
+1296fd461c      0.9185066666666667  0.8948          0.954678369966714   0.8550331715537685
+75372d83ab      0.9195466666666666  0.89552         0.9541852826125495  0.8629513709508426
+6a7e1866a3      0.9181866666666667  0.8964          0.9551873097990777  0.8595586812709163
+ccceac7028      0.9192533333333334  0.89608         0.9546657196819067  0.8611241864339614
+```
+
 ## DAGsHub Features
 
 ### Experiment Tracker
 
 ![](.github/experiments.png)
+
 
 ### Pipeline DAG
 
