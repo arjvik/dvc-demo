@@ -4,15 +4,15 @@ stages:
     cmd: python3 train.py
     deps:
     - path: train.py
-      md5: 6998144a775a8aaa038fe22411cafde0
-      size: 1958
+      md5: e2ec82ccb44948600ad46df2f7f34a09
+      size: 2235
     outs:
-    - path: metrics.csv
-      md5: 1c79b2fe5b97ec913b06b00f59bbf889
-      size: 974
+    - path: metrics.tsv
+      md5: 7d56c60571c7d9ca0da20d96db99e5b2
+      size: 425
     - path: metrics.yaml
-      md5: 57272373eb08819ea12654937f31a015
-      size: 56
+      md5: 6fb043638f3e9380893aca0c4c8d5d85
+      size: 57
     - path: model.h5
-      md5: 12264a2a962e2b4af1ad65e11c05f823
+      md5: ec92d927a7589382a4caec85a2ebaabf
       size: 157176

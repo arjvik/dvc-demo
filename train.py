@@ -7,7 +7,6 @@ from tensorflow.keras.datasets.mnist import load_data
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import InputLayer, MaxPooling2D, Conv2D, Flatten
 from tensorflow.keras.callbacks import ModelCheckpoint, Callback
-import dagshub
 
 (x_train, y_train), (x_test, y_test) = load_data()
 x_train, x_test = np.float32(x_train[..., np.newaxis] / 255), np.float32(x_test[..., np.newaxis] / 255.0)
@@ -24,20 +23,25 @@ model = Sequential([
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model.summary()
 
-class DAGsHubLogger(Callback):
-    def __init__(self):
-        self.logger = dagshub.DAGsHubLogger('metrics.csv', should_log_hparams=False)
+class TrainingCurveLogger(Callback):
+    def __init__(self, filename="metrics.tsv", separator="\t"):
+        self.filename = filename
+        self.separator = separator
+        self.metric_names = None
     def on_epoch_end(self, epoch, logs=None):
-        self.logger.log_metrics(logs, step_num=epoch)
-    def on_train_end(self, logs=None):
-    	self.logger.close()
+        if not self.metric_names:
+            self.metric_names = sorted(logs.keys())
+            with open(self.filename, 'w') as f:
+               print(*self.metric_names, sep=self.separator, file=f)
+        with open(self.filename, 'a') as f:
+            print(*(logs[metric] for metric in self.metric_names), sep=self.separator, file=f)
 
 class BestMetricsLogger(Callback):
     def on_train_end(self, logs=None):
         with open('metrics.yaml', 'w') as m:
             print(f'trainAcc: {logs["accuracy"]}\ntestAcc: {logs["val_accuracy"]}', file=m)
 
-cb_logger = DAGsHubLogger()
+cb_logger = TrainingCurveLogger()
 cb_checkpoint = ModelCheckpoint('model.h5')
 cb_metrics = BestMetricsLogger()
 

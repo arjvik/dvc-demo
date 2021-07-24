@@ -5,7 +5,7 @@ stages:
       - train.py
     outs:
       - model.h5
-      - metrics.csv:
+      - metrics.tsv:
           cache: false
     metrics:
       - metrics.yaml:
