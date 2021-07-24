@@ -1,0 +1,12 @@
+stages:
+  train:
+    cmd: python3 train.py
+    deps:
+      - train.py
+    outs:
+      - model.h5
+      - metrics.csv:
+          cache: false
+    metrics:
+      - metrics.yaml:
+          cache: false

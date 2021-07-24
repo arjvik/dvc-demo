@@ -1,0 +1,18 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: python3 train.py
+    deps:
+    - path: train.py
+      md5: 6998144a775a8aaa038fe22411cafde0
+      size: 1958
+    outs:
+    - path: metrics.csv
+      md5: 1c79b2fe5b97ec913b06b00f59bbf889
+      size: 974
+    - path: metrics.yaml
+      md5: 57272373eb08819ea12654937f31a015
+      size: 56
+    - path: model.h5
+      md5: 12264a2a962e2b4af1ad65e11c05f823
+      size: 157176
