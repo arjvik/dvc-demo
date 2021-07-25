@@ -5,8 +5,13 @@ stages:
       - train.py
     outs:
       - model.h5
+    plots:
       - metrics.tsv:
           cache: false
+          title: Validation Accuracy Curve
+          x_label: Epoch
+          y: val_accuracy
+          y_label: Validation Accuracy
     metrics:
       - metrics.yaml:
           cache: false
