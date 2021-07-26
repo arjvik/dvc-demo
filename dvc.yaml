@@ -12,4 +12,4 @@ stages:
       metrics:
         cache: false
         summary: false
-        html: true
+        html: false
