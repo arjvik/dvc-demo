@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import dvclive
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -24,28 +25,19 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=
 model.summary()
 
 class TrainingCurveLogger(Callback):
-    def __init__(self, filename="metrics.tsv", separator="\t"):
-        self.filename = filename
-        self.separator = separator
-        self.metric_names = None
-    def on_epoch_end(self, epoch, logs=None):
-        if not self.metric_names:
-            self.metric_names = sorted(logs.keys())
-            with open(self.filename, 'w') as f:
-               print(*self.metric_names, sep=self.separator, file=f)
-        with open(self.filename, 'a') as f:
-            print(*(logs[metric] for metric in self.metric_names), sep=self.separator, file=f)
-
-class BestMetricsLogger(Callback):
+    def on_epoch_end(self, epoch, logs={}):
+        for metric, value in logs.items():
+            dvclive.log(metric, value)
+        dvclive.next_step()
     def on_train_end(self, logs=None):
+        history = self.model.history.history
         with open('metrics.yaml', 'w') as m:
-            print(f'trainAcc: {logs["accuracy"]}\ntestAcc: {logs["val_accuracy"]}', file=m)
+            print(f'trainAcc: {max(history["accuracy"])}\ntestAcc: {max(history["val_accuracy"])}', file=m)
 
 cb_logger = TrainingCurveLogger()
 cb_checkpoint = ModelCheckpoint('model.h5')
-cb_metrics = BestMetricsLogger()
 
-history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=5, callbacks=[cb_logger, cb_checkpoint, cb_metrics])
+history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=5, callbacks=[cb_logger, cb_checkpoint])
 history.history['epochs'] = list(np.array(history.epoch) + 1)
 history = history.history
 
