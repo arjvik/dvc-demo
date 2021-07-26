@@ -8,12 +8,12 @@ stages:
       size: 1831
     outs:
     - path: metrics
-      md5: 4057cf6af3ea63c9e39f97bea8669bf6.dir
-      size: 827
+      md5: 9f5e2bb080100bf65a57ba4e87ea0be5.dir
+      size: 828
       nfiles: 4
     - path: metrics.yaml
-      md5: 7730db03a64d272bac829820e862d16e
-      size: 56
+      md5: 32449ec2f42c11b5d0bf828124fab799
+      size: 57
     - path: model.h5
-      md5: f82a70af86813d58b41174ea845ea8f0
+      md5: de90cda3a6576f108b4688ef0f254700
       size: 157176
